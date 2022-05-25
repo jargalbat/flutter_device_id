@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'device_helper.dart';
+import 'package:flutter_device_id/device_info_helper.dart';
+import 'package:flutter_device_id/key_chain_helper.dart';
+import 'secure_storage_helper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -10,7 +12,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? _deviceName;
-  String? _deviceId;
+  String? _secureStorageDeviceId;
+  String? _keyChainDeviceId;
 
   @override
   void initState() {
@@ -30,7 +33,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             if (_deviceName != null) Text('Device name: $_deviceName'),
-            if (_deviceId != null) Text('Device id: $_deviceId'),
+            if (_secureStorageDeviceId != null) Text('Secure storage device id: $_secureStorageDeviceId'),
+            if (_keyChainDeviceId != null) Text('Key chain device id: $_keyChainDeviceId'),
           ],
         ),
       ),
@@ -38,8 +42,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _getDeviceInfo() async {
-    _deviceName = await DeviceHelper.getDeviceName();
-    _deviceId = await DeviceHelper.getStoredDeviceId();
+    _deviceName = await DeviceInfoHelper.getDeviceName();
+    _secureStorageDeviceId = await SecureStorageHelper.getStoredDeviceId();
+    // _keyChainDeviceId = await KeyChainHelper.getStoredDeviceId();
     setState(() {});
   }
 }
